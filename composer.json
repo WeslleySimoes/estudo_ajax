@@ -1,0 +1,21 @@
+{
+    "name": "pires/estudoajax",
+    "description": "Estudo ajax",
+    "type": "project",
+    "license": "Mit",
+    "authors": [
+        {
+            "name": "weslley Simões",
+            "email": "weslley_silvas@hotmail.com"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "app\\":"app/"
+        },
+        "files":[
+            "app/config/config.php"
+        ]
+    },
+    "require": {}
+}
