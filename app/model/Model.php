@@ -186,7 +186,7 @@ abstract class Model
     // RETORNA O VALOR DA ÚLTIMA CHAVE PRIMÁRIA INSERIDA
     public function last_primary_key()
     {
-        $sql = "SELECT MAX(idUsuario) AS last_pk FROM {$this->table_name}";
+        $sql = "SELECT MAX({$this->primary_key}) AS last_pk FROM {$this->table_name}";
 
         $query = $this->db->prepare($sql);
         $query->execute();

@@ -20,6 +20,4 @@ abstract class BaseController
 			require_once VIEW_DIR."/{$template}.php";
 		}
 	}
-
-	
 }
