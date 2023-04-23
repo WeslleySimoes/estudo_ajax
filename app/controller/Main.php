@@ -4,6 +4,8 @@ namespace app\controller;
 
 use app\model\Database;
 use app\model\ClienteModel;
+use app\model\Filters;
+use app\model\Pagination;
 
 class Main extends BaseController
 {
@@ -18,7 +20,8 @@ class Main extends BaseController
     {
         $data = [
             'nome'  => filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS),
-            'email' => filter_input(INPUT_POST,'email',FILTER_SANITIZE_SPECIAL_CHARS)
+            'email' => filter_input(INPUT_POST,'email',FILTER_SANITIZE_SPECIAL_CHARS),
+            'cliente_ativo' => 1
         ];
 
         try {
@@ -52,6 +55,39 @@ class Main extends BaseController
         echo json_encode($resposta,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
     }
 
+    public function alterarStatusCliente()
+    {
+        $idCliente = filter_input(INPUT_GET,'idCliente',FILTER_SANITIZE_NUMBER_INT);
+
+        try {
+
+            $clienteModel = new ClienteModel(Database::getInstance());
+            $clienteStatus = $clienteModel->toggleStatusCliente($idCliente);
+
+            if($clienteStatus < 1)
+            {
+                throw new \Exception('Ocorreu um erro ao atualizar o status do cliente!');
+            }
+
+            $resposta = [
+                'status' => 'success',
+                'message' => 'Status do cliente atualizado com sucesso!'
+            ];
+            
+        } catch (\Exception $e) {
+
+            $resposta = [
+                'status' => 'error',
+                'message' => 'Ocorreu um erro ao atualizar o status do cliente!'
+            ];
+        }
+
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($resposta,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+
+    }
+
     public function buscarCliente()
     {   
         $conn = Database::getInstance();
@@ -68,6 +104,12 @@ class Main extends BaseController
         $conn = Database::getInstance();
 
         $clienteModel = new ClienteModel($conn);
+
+        $filters = new Filters;
+        $filters->orderBy('id','DESC');
+
+        $clienteModel->setFilters($filters);
+        $clienteModel->setPagination(new Pagination());
         $todosClientes = $clienteModel->findAll();
 
         header('Content-Type: application/json; charset=utf-8');

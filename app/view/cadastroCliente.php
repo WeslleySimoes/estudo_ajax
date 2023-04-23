@@ -8,16 +8,77 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container-fluid mt-3">
-
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Cadastrar Cliente
         </button>
-    
+
         <!-- Begin Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -36,69 +97,38 @@
                                 <label for="email" class="col-form-label">E-mail: </label>
                                 <input type="text" name="email" class="form-control">
                             </div>
-                           
-                            <button type="submit" class="btn btn-primary">Cadastrar</button>                             
+
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
         <!-- End Modal -->
-        
+
+        <!-- Begin table -->
+        <table class="table  table-bordered border-secondary mt-3">
+            <thead class="bg-secondary text-white">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-table">
+            </tbody>
+        </table>
+
+        <!-- End table -->
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script>
-        const formCadastro = document.querySelector('#formCadastro');
-
-        formCadastro.addEventListener('submit', async (event) => {
-
-            event.preventDefault();
-
-            try {
-                //Enviando dados para cadastro de um cliente cliente
-                const resposta = await fetch('./?m=cadastrarCliente', {
-                    method: "POST",
-                    body: new FormData(formCadastro)
-                });
-
-                if (resposta.status != 200) {
-                    throw new Error('Ocorreu um erro ao cadastrar cliente!');
-                }
-
-                const data = await resposta.json();
-
-                if (data.status != 'success') {
-                    throw new Error(data.message);
-                }
-
-                // Limpando campos input
-                event.target.nome.value = '';
-                event.target.email.value = '';
-
-                //Mensagem de sucesso
-                Toastify({
-                    text: data.message,
-                    duration: 1500,
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    }
-
-                }).showToast();
-
-            } catch (error) {
-                //Mensagem de erro
-                Toastify({
-                    text: error.message,
-                    duration: 1500,
-                    style: {
-                        background: "linear-gradient(to right, #b43a3a,#fcb045)",
-                    }
-                }).showToast();
-            }
-        });
-    </script>
+    <script src="http://localhost/estudo_ajax/assets/js/main.js" ></script>
 </body>
 
 </html>

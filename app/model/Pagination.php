@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__.'/../widgets/PaginationHtml.php';
-
 namespace app\model;
 
 class CurrentPageException extends \Exception{}
