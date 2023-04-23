@@ -36,6 +36,7 @@ const clienteAcoes = {
                 // Limpando campos input
                 event.target.nome.value = '';
                 event.target.email.value = '';
+                event.target.nome.focus(); //Colocando o cursor no input com name='nome'
 
                 //Mensagem de sucesso
                 Toastify({
@@ -67,7 +68,6 @@ const clienteAcoes = {
             {
                 throw new Error('Ocorreu um erro ao atualizar o status do cliente');
             }
-
 
             let response = await fetch(`./?m=alterarStatusCliente&idCliente=${idCliente}`);
 
